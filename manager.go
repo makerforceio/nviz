@@ -1,8 +1,8 @@
 package main
 
 import (
-	"errors"
 	"encoding/base64"
+	"errors"
 
 	"github.com/julienschmidt/sse"
 )
@@ -13,7 +13,7 @@ type Instance struct {
 	Name            string      `json:"name"`
 	Args            interface{} `json:"args"`
 	LastUpdate      Update      `json:"lastupdate"`
-	LastUpdateImage []byte `json:"-"`
+	LastUpdateImage []byte      `json:"-"`
 }
 
 type Update struct {

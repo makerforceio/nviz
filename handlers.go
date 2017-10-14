@@ -49,7 +49,7 @@ func (h *Handlers) Update(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
-	// Update 
+	// Update
 	var d Update
 	err := json.NewDecoder(r.Body).Decode(&d)
 	if err != nil {
