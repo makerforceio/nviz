@@ -8,9 +8,11 @@ import (
 )
 
 var port int
+var assets string
 
 func init() {
 	flag.IntVar(&port, "port", 8080, "listen on port")
+	flag.StringVar(&assets, "assets", "builtin", "serve files from assets instead of built-in assets")
 }
 
 func main() {
@@ -21,7 +23,7 @@ func main() {
 	// Setup handlers
 	handlers := NewHandlers(manager)
 	// Create router
-	router := NewRouter(handlers)
+	router := NewRouter(handlers, assets)
 
 	// Listen
 	log.Println("main: Listening on port", port)

@@ -1,0 +1,20 @@
+{
+	"ImportPath": "github.com/serverwentdown/nviz",
+	"GoVersion": "go1.9",
+	"GodepVersion": "v79",
+	"Deps": [
+		{
+			"ImportPath": "github.com/elazarl/go-bindata-assetfs",
+			"Rev": "30f82fa23fd844bd5bb1e5f216db87fd77b5eb43"
+		},
+		{
+			"ImportPath": "github.com/julienschmidt/httprouter",
+			"Comment": "v1.1-51-g975b5c4",
+			"Rev": "975b5c4c7c21c0e3d2764200bf2aa8e34657ae6e"
+		},
+		{
+			"ImportPath": "github.com/julienschmidt/sse",
+			"Rev": "dedc8dfa3d5dbf90d2c4d70dfc25e7f8d657b424"
+		}
+	]
+}
