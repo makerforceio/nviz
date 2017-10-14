@@ -6,6 +6,7 @@ import os
 import sys
 import threading
 import requests
+import json
 import uuid
 import time
 
@@ -26,10 +27,12 @@ def wrapper(name, url, train_args = None):
     while not main.init_done:
         0
 
-    requests.put(url + "api/ai/{}".format(ai_id), data={
-                            "name" : name,
-                            "args" : vars(main.args)
-                            })
+    args = {
+        'name' : name,
+        'args' : vars(main.args)
+        }
+        
+    requests.put(url + "api/ai/{}".format(ai_id), data=json.dumps(args))
 
     render_thread = threading.Thread(target=render, args=(ai_id))
     render_thread.start()
@@ -44,8 +47,8 @@ def render(ai_id):
                     }
             out = main.render()
             
-            requests.post(url + "api/ai/{}/update".format(ai_id), data=progress)
-            requests.post(url + "api/ai/{}/update/image".fomat(ai_id), data=out)
+            requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
+            requests.post(url + "api/ai/{}/update/image".fomat(ai_id), data=json.dumps(out))
             
 if __name__ == "__main__":
     wrapper(os.getenv('AI_NAME', sys.argv[0]), os.getenv('URL', 'localhost:8080'), sys.argv)
