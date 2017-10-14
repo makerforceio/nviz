@@ -1,5 +1,5 @@
-html{
-    background-color: white;
+html,body{
+    height:100%;
 }
 .nav{
     background-color: white;
@@ -7,11 +7,10 @@ html{
     position:relative;
     z-index:5;
 }
-.mainsection{
+.jumbotron{
     background-color: #F5F5F5;
-    height: 80vh;
+    height:100%;
 }
-
 .icon{
     margin: 25px 10px 25px 10px;
     color:#009688;
