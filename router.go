@@ -1,6 +1,6 @@
 package main
 
-//go:generate go-bindata-assetfs -prefix frontend frontend/...
+//go:generate go-bindata-assetfs frontend/...
 
 import (
 	"net/http"

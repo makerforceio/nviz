@@ -1,7 +1,7 @@
 var lossChart;
 
 var graphInit = function () {
-    var ctx = document.getElementById("lossChart");
+    var ctx = document.querySelector(".lossChart").getContext('2d');
     var data ={
         labels: [],
         datasets: [
@@ -33,7 +33,14 @@ var graphInit = function () {
     lossChart = new Chart(ctx, {
         type: 'line',
         data: data,
-        options: {animationSteps: 15, scales:{xAxes: [{display: false}]}, tooltips: {enabled: false}, legend: {display: false}}
+        options: {
+			animationSteps: 15,
+			scales: {
+				xAxes: [{display: false}]
+				yAxes: [{display: false}]
+			},
+			tooltips: {enabled: false}, legend: {display: false}
+		}
     });
 };
 
@@ -41,3 +48,4 @@ var graphAddDatapoint = function (data){
     lossChart.data.datasets[0].data.push(data);
     lossChart.update();
 };
+

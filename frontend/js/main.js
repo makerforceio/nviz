@@ -7,7 +7,7 @@ const app = new Vue({
 		view: 'index',
 		name: '<name>',
 		uuid: '<uuid>',
-		loss: '<loss>',
+		training_loss: '<training_loss>',
 		epoch: '<epoch>',
 		stats: {},
 		args: {},
@@ -23,7 +23,7 @@ const app = new Vue({
 		forwardClick: () => { },
 
 		formatEpoch: e => e.toString().padStart(9, "0").match(/.{1,3}/g).join(","),
-		formatLoss: l => l.toPrecision(10),
+		formatLoss: l => l.toPrecision(7),
 	},
 })
 
@@ -49,12 +49,17 @@ const showAi = uuid => {
 	fetch('/api/ai/' + app.uuid).then(throwIfNotOk).then(data => {
 		app.name = data.name
 		app.args = data.args
-		app.loss = data.lastupdate.loss
+		app.training_loss = data.lastupdate.training_loss
 		app.epoch = data.lastupdate.epoch
 		app.stats = data.lastupdate.stats
 		app.image = data.lastupdateimage.image
 
 		app.view = 'ai'
+
+		// tragic
+		setTimeout(() => {
+			graphInit()
+		}, 20);
 	}).catch(e => {
 		console.error(e)
 		window.location.hash = ""
@@ -91,9 +96,12 @@ stream.addEventListener('Update', (e) => {
 	if (app.uuid != uuid) {
 		return
 	}
-	app.loss = data.loss
+	app.training_loss = data.training_loss
 	app.epoch = data.epoch
 	app.stats = data.stats
+
+	// tragic
+	graphAddDatapoint(data.training_loss)
 })
 
 stream.addEventListener('UpdateImage', (e) => {

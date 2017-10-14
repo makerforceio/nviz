@@ -17,7 +17,7 @@ type Instance struct {
 
 type Update struct {
 	Epoch uint64      `json:"epoch"`
-	Loss  float64     `json:"loss"`
+	TrainingLoss  float64     `json:"training_loss"`
 	Stats interface{} `json:"stats"`
 }
 
