@@ -19,7 +19,7 @@ func NewRouter(h *Handlers, assets string) *httprouter.Router {
 	router.DELETE("/api/ai/:uuid", h.Delete)
 
 	// Dashboard Stream
-	router.GET("/stream", h.Stream)
+	router.GET("/api/stream", h.Stream)
 
 	// Dashboard
 	router.GET("/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
