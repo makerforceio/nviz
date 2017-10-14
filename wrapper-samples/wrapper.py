@@ -14,7 +14,7 @@ def wrapper(name, url, train_args = None):
     if url[len(url)-1] != '/':
         url += '/'
     ai_id = uuid.uuid4()
-    name = os.path.splitext(os.path.basename(name))
+    name = os.path.splitext(os.path.basename(name))[0]
 
     print("Name: {}".format(name))
     print("UUID: {}".format(ai_id))
@@ -28,7 +28,7 @@ def wrapper(name, url, train_args = None):
 
     requests.put(url + "api/ai/{}".format(ai_id), data={
                             "name" : name,
-                            "args" : main.args
+                            "args" : vars(main.args)
                             })
 
     render_thread = threading.Thread(target=render, args=(ai_id))
