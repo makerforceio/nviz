@@ -1,0 +1,25 @@
+.topbar{
+    background-color: #43A047;
+    height:10vh;
+
+    -webkit-box-shadow: 0px 3px 12px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 12px -7px rgba(0,0,0,0.75);
+    box-shadow: 0px 3px 12px -7px rgba(0,0,0,0.75);
+    position:relative;
+    z-index:6;
+}
+.mainbar{
+    background-color: white;
+    height:10vh;
+
+    -webkit-box-shadow: 0px 3px 12px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 12px -7px rgba(0,0,0,0.75);
+    box-shadow: 0px 3px 12px -7px rgba(0,0,0,0.75);
+    position:relative;
+    z-index:5;
+}
+.mainsection{
+    background-color: #F5F5F5;
+    height:80vh;
+}
+
