@@ -20,9 +20,9 @@ func NewRouter(h *Handlers, assets string) *httprouter.Router {
 
 	// Dashboard Stream
 	router.GET("/stream", h.Stream)
-	
+
 	// Dashboard
-	router.GET("/", func (w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	router.GET("/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		http.Redirect(w, r, "/dashboard/", http.StatusFound)
 	})
 	if assets == "builtin" {
