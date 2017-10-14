@@ -13,7 +13,11 @@ html{
 }
 
 .icon{
-    margin: 45px 10px 45px 10px;
+    margin: 25px 10px 25px 10px;
+    color:#009688;
+}
+
+.color{
     color:#009688;
 }
 
@@ -21,8 +25,8 @@ html{
     color:#00796B;
 }
 
-.epoch{
-    margin: 15px 0px 15px 150px;
+.header{
+    margin: 15px 10px 15px 150px;
 }
 
 .bold{
