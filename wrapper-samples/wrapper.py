@@ -23,6 +23,9 @@ def wrapper(name, url, train_args = None):
     train_thread = threading.Thread(target=main.main, args=(train_args))
     train_thread.start()
 
+    while not main.init_done:
+        0
+
     requests.put(url + "api/ai/{}".format(ai_id), data={
                             "name" : name,
                             "args" : main.args
