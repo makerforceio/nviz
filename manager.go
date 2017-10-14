@@ -47,7 +47,7 @@ func (m *Manager) New(uuid string, instance Instance) error {
 		return errors.New("stuff exists")
 	}
 	m.instances[uuid] = &instance
-	go m.Streamer.SendJSON(uuid, "New", Event{uuid, instance})
+	m.Streamer.SendJSON(uuid, "New", Event{uuid, instance})
 	return nil
 }
 
@@ -65,7 +65,7 @@ func (m *Manager) Update(uuid string, update Update) error {
 		return errors.New("stuff doesn't exist")
 	}
 	m.instances[uuid].LastUpdate = update
-	go m.Streamer.SendJSON(uuid, "Update", Event{uuid, update})
+	m.Streamer.SendJSON(uuid, "Update", Event{uuid, update})
 	return nil
 }
 
@@ -75,7 +75,7 @@ func (m *Manager) UpdateImage(uuid string, updateImage UpdateImage) error {
 		return errors.New("stuff doesn't exist")
 	}
 	m.instances[uuid].LastUpdateImage = updateImage
-	go m.Streamer.SendJSON(uuid, "UpdateImage", Event{uuid, updateImage})
+	m.Streamer.SendJSON(uuid, "UpdateImage", Event{uuid, updateImage})
 	return nil
 }
 
@@ -85,7 +85,7 @@ func (m *Manager) Delete(uuid string) error {
 		return errors.New("stuff doesn't exist")
 	}
 	delete(m.instances, uuid)
-	go m.Streamer.SendJSON(uuid, "Delete", Event{uuid, nil})
+	m.Streamer.SendJSON(uuid, "Delete", Event{uuid, nil})
 	return nil
 }
 
