@@ -1,4 +1,5 @@
 var lossChart;
+var cnt;
 
 var graphInit = function () {
     var ctx = document.querySelector(".lossChart").getContext('2d');
@@ -44,8 +45,12 @@ var graphInit = function () {
     });
 };
 
+
 var graphAddDatapoint = function (data){
     lossChart.data.datasets[0].data.push(data);
+    lossChart.data.labels.push(cnt);
     lossChart.update();
+    
+    cnt++;
 };
 
