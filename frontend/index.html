@@ -73,7 +73,7 @@
 							{{ name }}: {{ value }}
 							<a href="#" class="badge badge-pill badge-secondary help">?</a>
 						</li>
-						<li v-if="!stats">
+						<li v-if="Object.keys(stats || {}).length === 0">
 							none
 						</li>
 					</ul>
@@ -83,7 +83,7 @@
 							{{ name }}: {{ value }}
 							<a href="#" class="badge badge-pill badge-secondary help">?</a>
 						</li>
-						<li v-if="!args">
+						<li v-if="Object.keys(args || {}).length === 0">
 							none
 						</li>
 					</ul>
