@@ -9,9 +9,12 @@ import requests
 import json
 import uuid
 import time
+import atexit
 
+ai_id = None
 ## Custom name for AI, URL for nvis
-def wrapper(name, url, train_args = None):
+def wrapper(name, train_args = None):
+    global url, ai_id
     if url[len(url)-1] != '/':
         url += '/'
     ai_id = uuid.uuid4()
@@ -39,20 +42,26 @@ def wrapper(name, url, train_args = None):
 
 def render(url, ai_id):
     while True:
-        if main.model is not None:
-            progress = {
-                'time'          : time.time(),
-                'epoch'         : main.epoch,
-                'training_loss' : main.training_loss,
-                'stats'         : main.stats,
-            }
-            out = None
-            if main.render:
-                out = main.render()
-            
-            requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
-            if out is not None:
-                requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
-            
+        progress = {
+            'time'          : time.time(),
+            'epoch'         : main.epoch,
+            'training_loss' : main.training_loss,
+            'stats'         : main.stats,
+    }
+        out = None
+        if main.render:
+            out = main.render()
+                
+        requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
+        if out is not None:
+            requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
+
+def exit_handler():
+    requests.delete(url + "api/ai/{}".format(ai_id))
+    
+atexit.register(exit_handler)
+
 if __name__ == "__main__":
-    wrapper(os.getenv('AI_NAME', sys.argv[0]), os.getenv('URL', 'localhost:8080'), sys.argv)
+    global url
+    url = os.getenv('URL', 'localhost:8080')
+    wrapper(os.getenv('AI_NAME', sys.argv[0]), sys.argv)
