@@ -36,7 +36,7 @@ var graphInit = function () {
         options: {
 			animationSteps: 15,
 			scales: {
-				xAxes: [{display: false}]
+				xAxes: [{display: false}],
 				yAxes: [{display: false}]
 			},
 			tooltips: {enabled: false}, legend: {display: false}
