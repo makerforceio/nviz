@@ -23,12 +23,15 @@ def wrapper(name, url, train_args = None):
     train_thread = threading.Thread(target=main.main, args=(train_args))
     train_thread.start()
 
-    requests.put("URL ARGS", data=main.args)
+    requests.put(url + "api/ai/{}".format(ai_id), data={
+                            "name" : name,
+                            "args" : main.args
+                            })
 
-    render_thread = threading.Thread(target=render)
+    render_thread = threading.Thread(target=render, args=(ai_id))
     render_thread.start()
 
-def render():
+def render(ai_id):
     while True:
         if main.model is not None:
             progress = {
@@ -38,9 +41,8 @@ def render():
                     }
             out = main.render()
             
-            requests.post("URL Data", data=progress)
-            requests.post("URL Image", data=out)
+            requests.post(url + "api/ai/{}/update".format(ai_id), data=progress)
+            requests.post(url + "api/ai/{}/update/image".fomat(ai_id), data=out)
             
-
 if __name__ == "__main__":
     wrapper(os.getenv('AI_NAME', sys.argv[0]), os.getenv('URL', 'localhost:8080'), sys.argv)
