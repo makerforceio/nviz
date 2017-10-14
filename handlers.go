@@ -18,6 +18,22 @@ type Handlers struct {
 
 // API
 
+func (h *Handlers) Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	instances, err := h.manager.Index()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	data, err := json.Marshal(instances)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(data)
+}
+
 func (h *Handlers) New(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if r.Body == nil {
 		http.Error(w, "Please send a request body", http.StatusBadRequest)
@@ -41,6 +57,22 @@ func (h *Handlers) New(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	log.Println("handlers:", ps.ByName("uuid"), d)
 	// Print
 	fmt.Fprintln(w, "OK")
+}
+
+func (h *Handlers) Get(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	instances, err := h.manager.Get(ps.ByName("uuid"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	data, err := json.Marshal(instances)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(data)
 }
 
 func (h *Handlers) Update(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -79,7 +111,7 @@ func (h *Handlers) UpdateImage(w http.ResponseWriter, r *http.Request, ps httpro
 	buf.ReadFrom(r.Body)
 	d := buf.Bytes()
 
-	err := h.manager.UpdateImage(ps.ByName("uuid"), d)
+	err := h.manager.UpdateImage(ps.ByName("uuid"), UpdateImage{d})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
