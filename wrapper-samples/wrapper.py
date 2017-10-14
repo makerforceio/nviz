@@ -1,6 +1,6 @@
 ## Assuming standard python main files
 ## File: main; Function: main.main(args); Args: main.args
-import model3 as main
+import main
 
 import os
 import sys
@@ -9,9 +9,12 @@ import requests
 import json
 import uuid
 import time
+import atexit
 
+ai_id = None
 ## Custom name for AI, URL for nvis
-def wrapper(name, url, train_args = None):
+def wrapper(name, train_args = None):
+    global url, ai_id
     if url[len(url)-1] != '/':
         url += '/'
     ai_id = uuid.uuid4()
@@ -52,6 +55,13 @@ def render(url, ai_id):
         requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
         if out is not None:
             requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
-            
+
+def exit_handler():
+    requests.delete(url + "api/ai/{}".format(ai_id))
+    
+atexit.register(exit_handler)
+
 if __name__ == "__main__":
-    wrapper(os.getenv('AI_NAME', sys.argv[0]), os.getenv('URL', 'localhost:8080'), sys.argv)
+    global url
+    url = os.getenv('URL', 'localhost:8080')
+    wrapper(os.getenv('AI_NAME', sys.argv[0]), sys.argv)
