@@ -10,7 +10,7 @@ func NewRouter(h *Handlers) *httprouter.Router {
 	// API
 	router.PUT("/api/ai/:uuid", h.New)
 	router.POST("/api/ai/:uuid/update", h.Update)
-	router.POST("/api/ai/:uuid/image", h.Image)
+	router.POST("/api/ai/:uuid/update/image", h.UpdateImage)
 	router.DELETE("/api/ai/:uuid", h.Delete)
 
 	// Client

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,6 +10,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// Handler
+
 type Handlers struct {
 	manager *Manager
 }
@@ -16,54 +19,93 @@ type Handlers struct {
 // API
 
 func (h *Handlers) New(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// Parse JSON
-	log.Println(ps)
-
-	var d NewData
 	if r.Body == nil {
 		http.Error(w, "Please send a request body", http.StatusBadRequest)
 		return
 	}
+
+	// Create
+	var d Instance
 	err := json.NewDecoder(r.Body).Decode(&d)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	log.Println(d)
 
+	h.manager.New(ps.ByName("uuid"), d)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Println(ps.ByName("uuid"), d)
 	// Print
 	fmt.Fprintln(w, "OK")
 }
 
 func (h *Handlers) Update(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// Don't need to parse JSON, just forward directly to clients
 	if r.Body == nil {
 		http.Error(w, "Please send a request body", http.StatusBadRequest)
 		return
 	}
 
+	// Update 
+	var d Update
+	err := json.NewDecoder(r.Body).Decode(&d)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.manager.Update(ps.ByName("uuid"), d)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Println(ps.ByName("uuid"), d)
 	// Print
 	fmt.Fprintln(w, "OK")
 }
 
-func (h *Handlers) Image(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// Push image
+func (h *Handlers) UpdateImage(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	if r.Body == nil {
+		http.Error(w, "Please send a request body", http.StatusBadRequest)
+		return
+	}
 
+	// Push image
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(r.Body)
+	d := buf.Bytes()
+
+	err := h.manager.UpdateImage(ps.ByName("uuid"), d)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Println(ps.ByName("uuid"))
 	// Print
 	fmt.Fprintln(w, "OK")
 }
 
 func (h *Handlers) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// Push image
+	err := h.manager.Delete(ps.ByName("uuid"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
+	log.Println(ps.ByName("uuid"))
 	// Print
 	fmt.Fprintln(w, "OK")
 }
 
 // Client
 
-func (h *Handlers) Stream(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
-	m.streamer.ServeHTTP(w http.ResponseWriter, _ *http.Request)
+func (h *Handlers) Stream(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	h.manager.Streamer.ServeHTTP(w, r)
 }
 
 func NewHandlers(manager *Manager) *Handlers {
