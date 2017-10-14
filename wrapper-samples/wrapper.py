@@ -34,10 +34,10 @@ def wrapper(name, url, train_args = None):
         
     requests.put(url + "api/ai/{}".format(ai_id), data=json.dumps(args))
 
-    render_thread = threading.Thread(target=render, args=(ai_id,))
+    render_thread = threading.Thread(target=render, args=(url, ai_id,))
     render_thread.start()
 
-def render(ai_id):
+def render(url, ai_id):
     while True:
         if main.model is not None:
             progress = {
@@ -45,11 +45,12 @@ def render(ai_id):
                     'epoch'         : main.epoch,
                     'training_loss' : main.training_loss,
                     }
+            out = None
             if main.render:
                 out = main.render()
             
             requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
-            if main.render:
+            if out is not None:
                 requests.post(url + "api/ai/{}/update/image".fomat(ai_id), data=json.dumps(out))
             
 if __name__ == "__main__":
