@@ -19,7 +19,7 @@ type Instance struct {
 type Update struct {
 	Epoch uint64      `json:"epoch"`
 	Loss  float64     `json:"loss"`
-	Args  interface{} `json:"args"`
+	Stats  interface{} `json:"stats"`
 }
 
 // Manager
