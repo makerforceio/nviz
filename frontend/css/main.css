@@ -5,7 +5,16 @@
 	font-size: 2em;
 }
 
+.brand {
+	font-size: 4em;
+	margin-top: -0.25em;
+	font-style: italic;
+	font-weight: 200;
+}
+
 .help {
 	font-size: 0.6em;
 	vertical-align: top;
 }
+
+

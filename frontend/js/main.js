@@ -93,6 +93,9 @@ stream.addEventListener('Update', (e) => {
 	const o = JSON.parse(e.data)
 	const data = o.data
 	const uuid = o.uuid
+	if (app.index[uuid]) {
+		app.index[uuid].lastupdate = data;
+	}
 	if (app.uuid != uuid) {
 		return
 	}
@@ -108,6 +111,9 @@ stream.addEventListener('UpdateImage', (e) => {
 	const o = JSON.parse(e.data)
 	const data = o.data
 	const uuid = o.uuid
+	if (app.index[uuid]) {
+		app.index[uuid].lastupdateimage = data;
+	}
 	if (app.uuid != uuid) {
 		return
 	}
