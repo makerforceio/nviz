@@ -11,3 +11,4 @@
 - Test Loss
 - Step
 - Step Back
+- Latency Count
