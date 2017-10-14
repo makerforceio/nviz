@@ -38,7 +38,7 @@ func (h *Handlers) New(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		return
 	}
 
-	log.Println(ps.ByName("uuid"), d)
+	log.Println("handlers:", ps.ByName("uuid"), d)
 	// Print
 	fmt.Fprintln(w, "OK")
 }
@@ -63,7 +63,7 @@ func (h *Handlers) Update(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
-	log.Println(ps.ByName("uuid"), d)
+	log.Println("handlers:", ps.ByName("uuid"), d)
 	// Print
 	fmt.Fprintln(w, "OK")
 }
@@ -85,7 +85,7 @@ func (h *Handlers) UpdateImage(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
-	log.Println(ps.ByName("uuid"))
+	log.Println("handlers:", ps.ByName("uuid"))
 	// Print
 	fmt.Fprintln(w, "OK")
 }
@@ -97,7 +97,7 @@ func (h *Handlers) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
-	log.Println(ps.ByName("uuid"))
+	log.Println("handlers:", ps.ByName("uuid"))
 	// Print
 	fmt.Fprintln(w, "OK")
 }

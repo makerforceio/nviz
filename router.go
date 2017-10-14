@@ -1,6 +1,6 @@
 package main
 
-//go:generate go-bindata-assetfs frontend
+//go:generate go-bindata-assetfs -prefix frontend frontend/...
 
 import (
 	"net/http"
@@ -18,12 +18,17 @@ func NewRouter(h *Handlers, assets string) *httprouter.Router {
 	//router.POST("/api/ai/:uuid/error", h.Error)
 	router.DELETE("/api/ai/:uuid", h.Delete)
 
-	// Client
+	// Dashboard Stream
 	router.GET("/stream", h.Stream)
-	if len(assets) == 0 {
-		router.ServeFiles("/*filepath", assetFS())
+	
+	// Dashboard
+	router.GET("/", func (w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		http.Redirect(w, r, "/dashboard/", http.StatusFound)
+	})
+	if assets == "builtin" {
+		router.ServeFiles("/dashboard/*filepath", assetFS())
 	} else {
-		router.ServeFiles("/*filepath", http.Dir(assets))
+		router.ServeFiles("/dashboard/*filepath", http.Dir(assets))
 	}
 
 	return router
