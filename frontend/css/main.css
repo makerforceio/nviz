@@ -1,35 +1,37 @@
 html,body{
     height:100%;
 }
-
 .nav{
     background-color: white;
     box-shadow: 0px 3px 12px -7px rgba(0,0,0,0.75);
     position:relative;
     z-index:5;
 }
-
 .jumbotron{
     background-color: #F5F5F5;
     height:100%;
 }
-
 .icon{
     margin: 25px 10px 25px 10px;
     color:#009688;
 }
+
 .color{
     color:#009688;
 }
+
 .icon:hover{
     color:#00796B;
 }
+
 .header{
     margin: 15px 10px 15px 150px;
 }
+
 .bold{
     font-weight:700;
 }
+
 .light{
     font-weight:300;
 }
