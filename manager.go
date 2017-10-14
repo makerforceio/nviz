@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"errors"
 
 	"github.com/julienschmidt/sse"
@@ -13,13 +12,22 @@ type Instance struct {
 	Name            string      `json:"name"`
 	Args            interface{} `json:"args"`
 	LastUpdate      Update      `json:"lastupdate"`
-	LastUpdateImage []byte      `json:"-"`
+	LastUpdateImage UpdateImage `json:"lastupdateimage"`
 }
 
 type Update struct {
 	Epoch uint64      `json:"epoch"`
 	Loss  float64     `json:"loss"`
-	Stats  interface{} `json:"stats"`
+	Stats interface{} `json:"stats"`
+}
+
+type UpdateImage struct {
+	Image []byte `json:"image"`
+}
+
+type Event struct {
+	UUID string      `json:"uuid"`
+	Data interface{} `json:"data"`
 }
 
 // Manager
@@ -29,14 +37,26 @@ type Manager struct {
 	instances map[string]*Instance
 }
 
+func (m *Manager) Index() (map[string]*Instance, error) {
+	return m.instances, nil
+}
+
 func (m *Manager) New(uuid string, instance Instance) error {
 	_, ok := m.instances[uuid]
 	if ok {
 		return errors.New("stuff exists")
 	}
 	m.instances[uuid] = &instance
-	m.Streamer.SendJSON(uuid, "New", instance)
+	m.Streamer.SendJSON(uuid, "New", Event{uuid, instance})
 	return nil
+}
+
+func (m *Manager) Get(uuid string) (*Instance, error) {
+	instance, ok := m.instances[uuid]
+	if !ok {
+		return nil, errors.New("stuff doesn't exist")
+	}
+	return instance, nil
 }
 
 func (m *Manager) Update(uuid string, update Update) error {
@@ -45,19 +65,17 @@ func (m *Manager) Update(uuid string, update Update) error {
 		return errors.New("stuff doesn't exist")
 	}
 	m.instances[uuid].LastUpdate = update
-	m.Streamer.SendJSON(uuid, "Update", update)
+	m.Streamer.SendJSON(uuid, "Update", Event{uuid, update})
 	return nil
 }
 
-func (m *Manager) UpdateImage(uuid string, image []byte) error {
+func (m *Manager) UpdateImage(uuid string, updateImage UpdateImage) error {
 	_, ok := m.instances[uuid]
 	if !ok {
 		return errors.New("stuff doesn't exist")
 	}
-	m.instances[uuid].LastUpdateImage = image
-	image64 := make([]byte, base64.StdEncoding.EncodedLen(len(image)))
-	base64.StdEncoding.Encode(image64, image)
-	m.Streamer.SendBytes(uuid, "UpdateImage", image64)
+	m.instances[uuid].LastUpdateImage = updateImage
+	m.Streamer.SendJSON(uuid, "UpdateImage", Event{uuid, updateImage})
 	return nil
 }
 
@@ -67,7 +85,7 @@ func (m *Manager) Delete(uuid string) error {
 		return errors.New("stuff doesn't exist")
 	}
 	delete(m.instances, uuid)
-	m.Streamer.SendJSON(uuid, "Delete", nil)
+	m.Streamer.SendJSON(uuid, "Delete", Event{uuid, nil})
 	return nil
 }
 
