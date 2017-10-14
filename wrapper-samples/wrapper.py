@@ -1,6 +1,6 @@
 ## Assuming standard python main files
 ## File: main; Function: main.main(args); Args: main.args
-import main
+import model3 as main
 
 import os
 import sys
@@ -39,20 +39,19 @@ def wrapper(name, url, train_args = None):
 
 def render(url, ai_id):
     while True:
-        if main.model is not None:
-            progress = {
-                'time'          : time.time(),
-                'epoch'         : main.epoch,
-                'training_loss' : main.training_loss,
-                'stats'         : main.stats,
-            }
-            out = None
-            if main.render:
-                out = main.render()
-            
-            requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
-            if out is not None:
-                requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
+        progress = {
+            'time'          : time.time(),
+            'epoch'         : main.epoch,
+            'training_loss' : main.training_loss,
+            'stats'         : main.stats,
+    }
+        out = None
+        if main.render:
+            out = main.render()
+                
+        requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
+        if out is not None:
+            requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
             
 if __name__ == "__main__":
     wrapper(os.getenv('AI_NAME', sys.argv[0]), os.getenv('URL', 'localhost:8080'), sys.argv)
