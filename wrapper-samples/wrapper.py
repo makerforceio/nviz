@@ -21,7 +21,7 @@ def wrapper(name, url, train_args = None):
     print("UUID: {}".format(ai_id))
     print("URL: {}".format(url))
 
-    train_thread = threading.Thread(target=main.main, args=(train_args))
+    train_thread = threading.Thread(target=main.main, args=(train_args,))
     train_thread.start()
 
     while not main.init_done:
@@ -33,22 +33,26 @@ def wrapper(name, url, train_args = None):
         }
         
     requests.put(url + "api/ai/{}".format(ai_id), data=json.dumps(args))
-
-    render_thread = threading.Thread(target=render, args=(ai_id))
+    
+    render_thread = threading.Thread(target=render, args=(url, ai_id,))
     render_thread.start()
 
-def render(ai_id):
+def render(url, ai_id):
     while True:
         if main.model is not None:
             progress = {
-                    'time'          : time.time(),
-                    'epoch'         : main.epoch,
-                    'training_loss' : main.training_loss,
-                    }
-            out = main.render()
+                'time'          : time.time(),
+                'epoch'         : main.epoch,
+                'training_loss' : main.training_loss,
+                'stats'         : main.stats,
+            }
+            out = None
+            if main.render:
+                out = main.render()
             
             requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
-            requests.post(url + "api/ai/{}/update/image".fomat(ai_id), data=json.dumps(out))
+            if out is not None:
+                requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
             
 if __name__ == "__main__":
     wrapper(os.getenv('AI_NAME', sys.argv[0]), os.getenv('URL', 'localhost:8080'), sys.argv)
