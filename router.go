@@ -11,7 +11,7 @@ import (
 func NewRouter(h *Handlers, assets string) *httprouter.Router {
 	router := httprouter.New()
 
-	// API
+	// Wapper
 	router.GET("/api/ai", h.Index)
 	router.PUT("/api/ai/:uuid", h.New)
 	router.GET("/api/ai/:uuid", h.Get)
@@ -19,6 +19,9 @@ func NewRouter(h *Handlers, assets string) *httprouter.Router {
 	router.POST("/api/ai/:uuid/update/image", h.UpdateImage)
 	//router.POST("/api/ai/:uuid/error", h.Error)
 	router.DELETE("/api/ai/:uuid", h.Delete)
+
+	// Docker
+	router.PUT("/api/docker", h.DockerNew)
 
 	// Dashboard Stream
 	router.GET("/api/stream", h.Stream)

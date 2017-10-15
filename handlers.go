@@ -138,6 +138,32 @@ func (h *Handlers) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.
 	fmt.Fprintln(w, "OK")
 }
 
+// Docker
+
+func (h *Handlers) DockerNew(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	if r.Body == nil {
+		http.Error(w, "Please send a request body", http.StatusBadRequest)
+		return
+	}
+
+	var d DockerNewParams
+	err := json.NewDecoder(r.Body).Decode(&d)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.manager.DockerNew(d)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Println("handlers:", "DockerNew:", d)
+	// Print
+	fmt.Fprintln(w, "OK")
+}
+
 // Client
 
 func (h *Handlers) Stream(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

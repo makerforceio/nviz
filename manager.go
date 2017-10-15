@@ -2,8 +2,13 @@ package main
 
 import (
 	"errors"
+	"strings"
 
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/client"
 	"github.com/julienschmidt/sse"
+	"golang.org/x/net/context"
 )
 
 // Structs
@@ -28,6 +33,11 @@ type UpdateImage struct {
 type Event struct {
 	UUID string      `json:"uuid"`
 	Data interface{} `json:"data"`
+}
+
+type DockerNewParams struct {
+	Image string `json:"docker-image"`
+	Args  string `json:"docker-args"`
 }
 
 // Manager
@@ -86,6 +96,35 @@ func (m *Manager) Delete(uuid string) error {
 	}
 	delete(m.instances, uuid)
 	m.Streamer.SendJSON(uuid, "Delete", Event{uuid, nil})
+	return nil
+}
+
+// Docker
+func (m *Manager) DockerNew(params DockerNewParams) error {
+	ctx := context.Background()
+	cli, err := client.NewEnvClient()
+	if err != nil {
+		return errors.New("something broke")
+	}
+
+	_, err = cli.ImagePull(ctx, params.Image, types.ImagePullOptions{})
+	if err != nil {
+		return errors.New("container image likely not found")
+	}
+
+	resp, err := cli.ContainerCreate(ctx, &container.Config{
+		Image: params.Image,
+		Cmd:   strings.Split(params.Args, " "),
+		Env:   []string{"URL=http://localhost:8080"},
+	}, nil, nil, "")
+	if err != nil {
+		return errors.New("cannot create container image")
+	}
+
+	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
+		return errors.New("cannot start container image")
+	}
+
 	return nil
 }
 

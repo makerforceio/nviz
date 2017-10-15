@@ -14,6 +14,9 @@ const app = new Vue({
 		image: '',
 		imageType: 'image/png',
 		index: {},
+		dockernewcreating: false,
+		dockernewerror: null,
+		dockernewstatus: null,
 	},
 	methods: {
 		playClick: () => { playClick() },
@@ -22,12 +25,61 @@ const app = new Vue({
 		backwardClick: () => { },
 		forwardClick: () => { },
 
-		formatEpoch: e => e.toString().padStart(9, "0").match(/.{1,3}/g).join(","),
+		dockerNewSubmit: (e) => {
+			e.preventDefault()
+			app.dockernewcreating = true
+			app.dockernewstatus = 'Creating container...'
+			const form = new FormData(e.target)
+			const data = formToJSON(form)
+			fetch('/api/docker', {
+				method: 'PUT',
+				body: data,
+			}).then(throwIfNotOk).then(o => {
+				// await New event
+				
+				app.dockernewstatus = 'Waiting for container to start...'
+			}).catch(e => {
+				app.dockernewcreating = false
+				app.dockernewstatus = null
+				app.dockernewerror = e.toString()
+			})
+		},
+
+		arrayWithAddWithSplit: (arr, n=3) => {
+			let arr1 = []
+			let arr2 = []
+			for (let key in arr) {
+				arr2.push(Object.assign({
+					uuid: key,
+				}, arr[key]))
+				if (arr2.length >= n) {
+					arr1.push(arr2)
+					arr2 = []
+				}
+			}
+			arr2.push('add')
+			while (arr2.length < n) {
+				arr2.push('invisible')
+			}
+			arr1.push(arr2)
+			arr2 = []
+			return arr1
+		},
+
+		formatEpoch: e => e.toString().padStart(9, '0').match(/.{1,3}/g).join(','),
 		formatLoss: l => l.toPrecision(7),
 	},
 })
 
 // TODO: pull index (current state) from server
+
+const formToJSON = form => {
+	let result = {}
+    for (let entry of form.entries()) {
+        result[entry[0]] = entry[1]
+    }
+    return JSON.stringify(result)
+}
 
 const throwIfNotOk = e => {
 	if (e.ok) {
@@ -62,14 +114,20 @@ const showAi = uuid => {
 		}, 20);
 	}).catch(e => {
 		console.error(e)
-		window.location.hash = ""
+		window.location.hash = ''
 	})
 }
 
+const showDockerNew = () => {
+	app.view = 'dockernew'
+}
+
 const checkHash = () => {
-	const match = window.location.hash.match('#!/ai/')
-	if (match && match.index == 0) {
+	let match
+	if ((match = window.location.hash.match('#!/ai/')) && match && match.index == 0) {
 		showAi(window.location.hash.slice(6))
+	} else if (window.location.hash == '#!/docker/new') {
+		showDockerNew()
 	} else {
 		showIndex()
 	}
