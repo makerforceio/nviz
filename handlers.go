@@ -155,6 +155,7 @@ func (h *Handlers) DockerNew(w http.ResponseWriter, r *http.Request, ps httprout
 
 	err = h.manager.DockerNew(d)
 	if err != nil {
+		log.Println("handlers:", "DockerNew:", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

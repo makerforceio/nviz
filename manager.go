@@ -36,8 +36,9 @@ type Event struct {
 }
 
 type DockerNewParams struct {
-	Image string `json:"docker-image"`
-	Args  string `json:"docker-args"`
+	ShouldPull bool   `json:"docker-shouldpull"`
+	Image      string `json:"docker-image"`
+	Args       string `json:"docker-args"`
 }
 
 // Manager
@@ -45,6 +46,7 @@ type DockerNewParams struct {
 type Manager struct {
 	Streamer  *sse.Streamer
 	instances map[string]*Instance
+	url       string
 }
 
 func (m *Manager) Index() (map[string]*Instance, error) {
@@ -104,33 +106,60 @@ func (m *Manager) DockerNew(params DockerNewParams) error {
 	ctx := context.Background()
 	cli, err := client.NewEnvClient()
 	if err != nil {
-		return errors.New("something broke")
+		return err
 	}
 
-	_, err = cli.ImagePull(ctx, params.Image, types.ImagePullOptions{})
-	if err != nil {
-		return errors.New("container image likely not found")
+	if params.ShouldPull {
+		_, err := cli.ImagePull(ctx, params.Image, types.ImagePullOptions{})
+		if err != nil {
+			return err
+		}
 	}
 
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image: params.Image,
 		Cmd:   strings.Split(params.Args, " "),
-		Env:   []string{"URL=http://localhost:8080"},
-	}, nil, nil, "")
+		Env:   []string{"URL=" + m.url},
+	}, &container.HostConfig{
+		NetworkMode: "host",
+	}, nil, "")
 	if err != nil {
-		return errors.New("cannot create container image")
+		return err
 	}
 
 	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		return errors.New("cannot start container image")
+		return err
+	}
+
+	return nil
+}
+func (m *Manager) DockerDelete(uuid string) error {
+	ctx := context.Background()
+	cli, err := client.NewEnvClient()
+	if err != nil {
+		return err
+	}
+
+	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
+	if err != nil {
+		return err
+	}
+
+	for _, c := range containers {
+		if c.Labels["uuid"] == uuid {
+			if err := cli.ContainerStop(ctx, c.ID, nil); err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil
 }
 
-func NewManager() *Manager {
+func NewManager(url string) *Manager {
 	return &Manager{
 		Streamer:  sse.New(),
 		instances: make(map[string]*Instance),
+		url:       url,
 	}
 }

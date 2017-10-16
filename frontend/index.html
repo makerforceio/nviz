@@ -159,6 +159,12 @@
 						<input type="text" class="form-control" name="docker-image" id="docker-image" aria-describedby="docker-image-help" placeholder="serverwentdown/test-ai-muse">
 						<small id="docker-image-help" class="form-text text-muted">Docker image to run</small>
 					</div>
+					<div class="form-check">
+						<label class="form-check-label">
+							<input type="checkbox" class="form-check-input" name="docker-shouldpull">
+							Always pull image?
+						</label>
+					</div>
 					<div class="form-group">
 						<label for="docker-args">Args</label>
 						<input type="text" class="form-control" name="docker-args" id="docker-args" aria-describedby="docker-args-help" placeholder="--epoch=100 --lr=0.001 --render-length=100 --save-interval=1800">
