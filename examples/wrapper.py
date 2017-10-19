@@ -34,8 +34,14 @@ def wrapper(name, train_args = None):
         'name' : name,
         'args' : vars(main.args)
         }
-        
-    requests.put(url + "api/ai/{}".format(ai_id), data=json.dumps(args))
+
+    completed = False
+    while not completed:
+        try:
+            requests.put(url + "api/ai/{}".format(ai_id), data=json.dumps(args))
+            completed = True
+        except:
+            0
     
     render_thread = threading.Thread(target=render, args=(url, ai_id,))
     render_thread.start()
@@ -51,11 +57,18 @@ def render(url, ai_id):
         out = None
         if main.render:
             out = main.render()
-                
-        requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
-        if out is not None:
-            requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
 
+        completed = False
+        while not completed:
+        try:
+            requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
+            if out is not None:
+                requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
+
+            completed = True
+        except:
+            0
+            
 def exit_handler():
     requests.delete(url + "api/ai/{}".format(ai_id))
     
