@@ -1,10 +1,12 @@
 # nviz
 A real-time visualization tool to train neural networks
-
+![Front Page](images/1.jpg)
 ## Inspiration
 Training neural networks can be a really painstaking process, involving a lot of trial and error and waiting time. One major part of that problem arises from how most neural networks, while being trained, output minimal data which is usually limited to the loss value. That means that you never quite know what the neural network is doing, only that it is supposedly getting "better" at it. At the end of the day after training is complete, it is very likely that the neural network is outputting something not even close to what we initially wanted. And just like that, hours of our time go to waste.
 
 The solution to that is pretty simple. We needed a real time visualization tool, capable of showing us statistics of how the neural network is doing along with the output at each stage, such that we can determine if the neural network is training down the right path at one glance. This simplifies the whole process and makes debugging a whole lot easier, along with making for a pretty cool demo.
+
+![Add a container](images/2.jpg)
 
 ## What it does
 nviz stands for neural network visualization and it is a tool that enables developers to easily look at the real-time state of a neural network as it is training. This concept builds upon 3 fundamental features.
@@ -20,7 +22,9 @@ nviz uses a web-based interface to allow developers to interact with their train
 * Arguments
 * Stats
 
-Additionally, it allows developers to start and stop training along with creating multiple instances of the neural network with different parameters such that multiple parameter options can be tested at the same time. The elegant user interface combined with the utility of the tool makes it a fun and easy to use service
+Additionally, it allows developers to start and stop training along with creating multiple instances of the neural network with different parameters such that multiple parameter options can be tested at the same time. The elegant user interface combined with the utility of the tool makes it a fun and easy to use service.
+
+![Training page](images/3.jpg)
 
 ## How we built it
 The project is divided into 3 parts, namely the python wrapper, back-end and front-end. Each of the sections is explained in detail below.
