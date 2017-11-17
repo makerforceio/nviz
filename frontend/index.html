@@ -132,7 +132,7 @@
 						</h4>
 						<h6 class="card-subtitle mb-2 text-muted text-truncate" v-bind:title="ai.uuid">{{ ai.uuid }}</h6>
 						<a class="card-link" v-bind:href="'#!/ai/' + ai.uuid">Open</a>
-						<a class="card-link text-danger" href="#">Delete</a>
+						<a class="card-link text-danger" href="#!" v-on:click.prevent="aiDelete(ai.uuid)">Delete</a>
 					</div>
 				</div>
 

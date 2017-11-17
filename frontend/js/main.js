@@ -25,6 +25,15 @@ const app = new Vue({
 		backwardClick: () => { },
 		forwardClick: () => { },
 
+		aiDelete: (uuid) => {
+			fetch('/api/ai/' + uuid, {
+				method: 'DELETE',
+			}).then(throwIfNotOk).then(o => {
+			}).catch(e => {
+				console.error(e)
+			})
+		},
+
 		dockerNewSubmit: (e) => {
 			e.preventDefault()
 			app.dockernewcreating = true
@@ -71,14 +80,12 @@ const app = new Vue({
 	},
 })
 
-// TODO: pull index (current state) from server
-
 const formToJSON = form => {
 	let result = {}
-    for (let entry of form.entries()) {
-        result[entry[0]] = entry[1]
-    }
-    return JSON.stringify(result)
+	for (let entry of form.entries()) {
+		result[entry[0]] = entry[1]
+	}
+	return JSON.stringify(result)
 }
 
 const throwIfNotOk = e => {
