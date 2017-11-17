@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 .epoch {
 	font-size: 1.5em;
 }
@@ -7,7 +11,7 @@
 
 .brand {
 	font-size: 4em;
-	margin-top: -0.25em;
+	margin-top: -0.5em;
 	font-style: italic;
 	font-weight: 200;
 }

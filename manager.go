@@ -14,6 +14,7 @@ import (
 // Structs
 
 type Instance struct {
+	sync.Mutex
 	Name            string      `json:"name"`
 	Args            interface{} `json:"args"`
 	LastUpdate      Update      `json:"lastupdate"`
@@ -44,6 +45,7 @@ type DockerNewParams struct {
 // Manager
 
 type Manager struct {
+	sync.Mutex
 	Streamer  *sse.Streamer
 	instances map[string]*Instance
 	url       string
@@ -58,7 +60,9 @@ func (m *Manager) New(uuid string, instance Instance) error {
 	if ok {
 		return errors.New("stuff exists")
 	}
+	m.Lock()
 	m.instances[uuid] = &instance
+	m.Unock()
 	m.Streamer.SendJSON(uuid, "New", Event{uuid, instance})
 	return nil
 }
@@ -72,21 +76,25 @@ func (m *Manager) Get(uuid string) (*Instance, error) {
 }
 
 func (m *Manager) Update(uuid string, update Update) error {
-	_, ok := m.instances[uuid]
+	instance, ok := m.instances[uuid]
 	if !ok {
 		return errors.New("stuff doesn't exist")
 	}
-	m.instances[uuid].LastUpdate = update
+	instance.Lock()
+	instance.LastUpdate = update
+	instance.Unock()
 	m.Streamer.SendJSON(uuid, "Update", Event{uuid, update})
 	return nil
 }
 
 func (m *Manager) UpdateImage(uuid string, updateImage UpdateImage) error {
-	_, ok := m.instances[uuid]
+	instance, ok := m.instances[uuid]
 	if !ok {
 		return errors.New("stuff doesn't exist")
 	}
-	m.instances[uuid].LastUpdateImage = updateImage
+	instance.Lock()
+	instance.LastUpdateImage = updateImage
+	instance.Unock()
 	m.Streamer.SendJSON(uuid, "UpdateImage", Event{uuid, updateImage})
 	return nil
 }
@@ -96,7 +104,9 @@ func (m *Manager) Delete(uuid string) error {
 	if !ok {
 		return errors.New("stuff doesn't exist")
 	}
+	m.Lock()
 	delete(m.instances, uuid)
+	m.Unlock()
 	m.Streamer.SendJSON(uuid, "Delete", Event{uuid, nil})
 	return nil
 }
@@ -133,6 +143,7 @@ func (m *Manager) DockerNew(params DockerNewParams) error {
 
 	return nil
 }
+
 func (m *Manager) DockerDelete(uuid string) error {
 	ctx := context.Background()
 	cli, err := client.NewEnvClient()
