@@ -8,17 +8,17 @@ A real-time visualization tool to train neural networks
 ## Installing
 
 ```
-go get github.com/serverwentdown/nviz
+go get github.com/makerforceio/nviz
 nviz -help
 ```
 
 ## Developing
 
 ```
-go get github.com/serverwentdown/nviz
+go get github.com/makerforceio/nviz
 go get github.com/elazarl/go-bindata-assetfs/...  # To embed the static site
 go get github.com/jteeuwen/go-bindata/...  # Required by assetfs
-cd $(go env GOPATH)/src/github.com/serverwentdown/nviz
+cd $(go env GOPATH)/src/github.com/makerforceio/nviz
 go generate
 go fmt
 go build
