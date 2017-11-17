@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"strings"
+	"sync"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
@@ -62,7 +63,7 @@ func (m *Manager) New(uuid string, instance Instance) error {
 	}
 	m.Lock()
 	m.instances[uuid] = &instance
-	m.Unock()
+	m.Unlock()
 	m.Streamer.SendJSON(uuid, "New", Event{uuid, instance})
 	return nil
 }
@@ -82,7 +83,7 @@ func (m *Manager) Update(uuid string, update Update) error {
 	}
 	instance.Lock()
 	instance.LastUpdate = update
-	instance.Unock()
+	instance.Unlock()
 	m.Streamer.SendJSON(uuid, "Update", Event{uuid, update})
 	return nil
 }
@@ -94,7 +95,7 @@ func (m *Manager) UpdateImage(uuid string, updateImage UpdateImage) error {
 	}
 	instance.Lock()
 	instance.LastUpdateImage = updateImage
-	instance.Unock()
+	instance.Unlock()
 	m.Streamer.SendJSON(uuid, "UpdateImage", Event{uuid, updateImage})
 	return nil
 }
