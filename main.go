@@ -10,11 +10,14 @@ import (
 var port int
 var url string
 var assets string
+var cpuprofile string
+var debug bool
 
 func init() {
 	flag.IntVar(&port, "port", 8080, "listen on port")
 	flag.StringVar(&url, "url", "http://172.17.0.1:8080", "url that is acessible by containers on $DOCKER_HOST")
 	flag.StringVar(&assets, "assets", "builtin", "serve files from assets instead of built-in assets")
+	flag.BoolVar(&debug, "debug", false, "enable http profiling")
 }
 
 func main() {
@@ -25,7 +28,7 @@ func main() {
 	// Setup handlers
 	handlers := NewHandlers(manager)
 	// Create router
-	router := NewRouter(handlers, assets)
+	router := NewRouter(handlers, assets, debug)
 
 	// Listen
 	log.Println("main: Listening on port", port)

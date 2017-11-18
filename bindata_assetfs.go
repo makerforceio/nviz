@@ -80,7 +80,7 @@ func (fi bindataFileInfo) Sys() interface{} {
 	return nil
 }
 
-var _frontendCssMainCss = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x5c\x8c\x41\xae\x83\x20\x14\x45\xc7\xb2\x8a\xb7\x01\x08\xdf\xfc\xff\x07\x74\x35\x28\x4f\x78\x09\x02\xa1\x2f\x5a\x6b\xba\xf7\x46\x69\x27\x4e\xef\x39\xf7\x0c\xd9\x6d\xb0\x0b\x80\xbc\x60\x9d\x62\x5e\xe5\xc3\x40\x20\xe7\x30\xdd\xc4\x4b\x08\x85\x25\x8f\x01\x76\xd1\x4d\x39\xb1\xbc\xd3\x13\x0d\xfc\xa8\x3f\x9c\x0f\xdc\xa8\x8c\xb6\x7a\xbc\x38\x7d\x33\x84\x1a\xaa\x4d\xee\x02\x7f\x0f\xd8\xcd\xb6\x7a\x4a\x92\x73\x31\x20\x75\x6b\x7e\x2c\xde\x22\x1a\x20\xb6\x91\xc6\xef\xb8\x22\xf9\xc0\x06\x7a\xad\x5b\x39\x60\x2c\x97\xb0\x56\xff\x67\x65\xc1\xca\x34\xda\x28\x6d\x24\x9f\x0c\x70\x2e\xe7\x47\xbc\x03\x00\x00\xff\xff\x0f\x3d\x3a\xef\xf0\x00\x00\x00")
+var _frontendCssMainCss = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x5c\x8c\x41\x0e\x83\x20\x10\x45\xd7\x72\x8a\xb9\x00\x84\x9a\xb6\x0b\x7a\x1a\x94\x11\x26\x41\x20\x74\xa2\xb5\xa6\x77\x6f\xd4\x76\xe3\xf6\xbf\xf7\x5f\x97\xdd\x02\xab\x00\xc8\x13\xd6\x21\xe6\x59\xbe\x0c\x04\x72\x0e\xd3\x43\x7c\x84\x50\x58\x72\x1f\x60\x15\xcd\x90\x13\xcb\x27\xbd\xd1\xc0\x45\xdd\x70\xdc\xf0\x41\x65\xb4\xd5\xe3\xc9\x69\x0f\x43\xa8\xae\xda\xe4\x4e\xf0\xba\xc1\x66\xb4\xd5\x53\x92\x9c\x8b\x01\xa9\x55\xbb\x47\x7f\x1a\x2f\x11\x0d\x10\xdb\x48\xfd\x7f\x9c\x91\x7c\x60\x03\xad\xd6\x47\x3a\x60\x2c\xa7\xb2\x56\xf7\xbd\x32\x61\x65\xea\x6d\x94\x36\x92\x4f\x06\x38\x97\xfd\x23\xbe\x01\x00\x00\xff\xff\x68\xd2\xc7\x8b\xf1\x00\x00\x00")
 
 func frontendCssMainCssBytes() ([]byte, error) {
 	return bindataRead(
@@ -95,7 +95,7 @@ func frontendCssMainCss() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/css/main.css", size: 240, mode: os.FileMode(420), modTime: time.Unix(1510665517, 0)}
+	info := bindataFileInfo{name: "frontend/css/main.css", size: 241, mode: os.FileMode(420), modTime: time.Unix(1511006127, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -115,7 +115,7 @@ func frontendFontawesomeCssFontawesomeProCoreCss() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/css/fontawesome-pro-core.css", size: 47167, mode: os.FileMode(420), modTime: time.Unix(1507978737, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/css/fontawesome-pro-core.css", size: 47167, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -135,7 +135,7 @@ func frontendFontawesomeCssFontawesomeProSolidCss() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/css/fontawesome-pro-solid.css", size: 598, mode: os.FileMode(420), modTime: time.Unix(1507978737, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/css/fontawesome-pro-solid.css", size: 598, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -155,7 +155,7 @@ func frontendFontawesomeWebfontsFontawesomeProSolid900Eot() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.eot", size: 127048, mode: os.FileMode(420), modTime: time.Unix(1507978755, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.eot", size: 127048, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -175,7 +175,7 @@ func frontendFontawesomeWebfontsFontawesomeProSolid900Otf() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.otf", size: 359640, mode: os.FileMode(420), modTime: time.Unix(1507978755, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.otf", size: 359640, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -195,7 +195,7 @@ func frontendFontawesomeWebfontsFontawesomeProSolid900Svg() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.svg", size: 469180, mode: os.FileMode(420), modTime: time.Unix(1507978755, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.svg", size: 469180, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -215,7 +215,7 @@ func frontendFontawesomeWebfontsFontawesomeProSolid900Ttf() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.ttf", size: 126820, mode: os.FileMode(420), modTime: time.Unix(1507978755, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.ttf", size: 126820, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -235,7 +235,7 @@ func frontendFontawesomeWebfontsFontawesomeProSolid900Woff() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.woff", size: 56448, mode: os.FileMode(420), modTime: time.Unix(1507978755, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.woff", size: 56448, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -255,7 +255,7 @@ func frontendFontawesomeWebfontsFontawesomeProSolid900Woff2() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.woff2", size: 44572, mode: os.FileMode(420), modTime: time.Unix(1507978755, 0)}
+	info := bindataFileInfo{name: "frontend/fontawesome/webfonts/fontawesome-pro-solid-900.woff2", size: 44572, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -275,7 +275,7 @@ func frontendIndexHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/index.html", size: 7180, mode: os.FileMode(420), modTime: time.Unix(1510893365, 0)}
+	info := bindataFileInfo{name: "frontend/index.html", size: 7180, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -295,7 +295,7 @@ func frontendJsGraphJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/js/graph.js", size: 1494, mode: os.FileMode(420), modTime: time.Unix(1508015457, 0)}
+	info := bindataFileInfo{name: "frontend/js/graph.js", size: 1494, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -315,7 +315,7 @@ func frontendJsMainJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "frontend/js/main.js", size: 3991, mode: os.FileMode(420), modTime: time.Unix(1510893376, 0)}
+	info := bindataFileInfo{name: "frontend/js/main.js", size: 3991, mode: os.FileMode(420), modTime: time.Unix(1510893662, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
