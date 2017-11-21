@@ -19,7 +19,8 @@ func NewRouter(h *Handlers, assets string, debug bool) *httprouter.Router {
 	router.PUT("/api/ai/:uuid", h.New)
 	router.GET("/api/ai/:uuid", h.Get)
 	router.POST("/api/ai/:uuid/update", h.Update)
-	router.POST("/api/ai/:uuid/update/image", h.UpdateImage)
+	router.POST("/api/ai/:uuid/update/image", h.UpdateImage) // TODO: DEPRECATED
+	router.POST("/api/ai/:uuid/update/image/:id", h.UpdateImage)
 	//router.POST("/api/ai/:uuid/error", h.Error)
 	router.DELETE("/api/ai/:uuid", h.Delete)
 

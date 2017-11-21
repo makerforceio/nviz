@@ -56,7 +56,7 @@
 			<div class="row p-4">
 
 				<div class="col col-sm p-4">
-					<img v-bind:src="'data:' + imageType + ';base64,' + image" class="img-fluid rounded mx-auto d-block">
+					<img v-for="(image, id) in images" v-bind:src="'data:' + image.type + ';base64,' + image.url" class="img-fluid rounded mx-auto d-block">
 				</div>
 
 				<div class="col-12 col-sm-5 p-4 card">
@@ -125,7 +125,7 @@
 				</div>
 
 				<div class="card" v-else>
-					<img class="card-img-top" v-if="ai.lastupdateimage.image" v-bind:src="'data:' + ai.lastupdateimage.imageType + ';base64,' + ai.lastupdateimage.image">
+					<img class="card-img-top" v-if="ai.lastupdateimage" v-bind:src="'data:' + ai.lastupdateimage.type + ';base64,' + ai.lastupdateimage.url">
 					<div class="card-body">
 						<h4 class="card-title text-truncate">
 							{{ ai.name }}
@@ -171,7 +171,7 @@
 						<small id="docker-args-help" class="form-text text-muted">Arguments to use</small>
 					</div>
 					<div class="progress" v-if="dockernewcreating">
-					    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+						<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
 					</div>
 					<button type="submit" class="btn btn-success" v-if="!dockernewcreating">
 						Start

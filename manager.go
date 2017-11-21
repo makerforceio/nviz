@@ -16,10 +16,10 @@ import (
 
 type Instance struct {
 	sync.Mutex
-	Name            string      `json:"name"`
-	Args            interface{} `json:"args"`
-	LastUpdate      Update      `json:"lastupdate"`
-	LastUpdateImage UpdateImage `json:"lastupdateimage"`
+	Name             string                 `json:"name"`
+	Args             interface{}            `json:"args"`
+	LastUpdate       Update                 `json:"lastupdate"`
+	LastUpdateImages map[uint64]UpdateImage `json:"lastupdateimages"`
 }
 
 type Update struct {
@@ -29,7 +29,9 @@ type Update struct {
 }
 
 type UpdateImage struct {
-	Image []byte `json:"image"`
+	ID   uint64 `json:"id"`
+	Type string `json:"type"`
+	Url  []byte `json:"url"`
 }
 
 type Event struct {
@@ -63,6 +65,7 @@ func (m *Manager) New(uuid string, instance Instance) error {
 	}
 	m.Lock()
 	m.instances[uuid] = &instance
+	m.instances[uuid].LastUpdateImages = make(map[uint64]UpdateImage)
 	m.Unlock()
 	m.Streamer.SendJSON(uuid, "New", Event{uuid, instance})
 	return nil
@@ -94,7 +97,7 @@ func (m *Manager) UpdateImage(uuid string, updateImage UpdateImage) error {
 		return errors.New("stuff doesn't exist")
 	}
 	instance.Lock()
-	instance.LastUpdateImage = updateImage
+	instance.LastUpdateImages[updateImage.ID] = updateImage
 	instance.Unlock()
 	m.Streamer.SendJSON(uuid, "UpdateImage", Event{uuid, updateImage})
 	return nil

@@ -11,8 +11,7 @@ const app = new Vue({
 		epoch: '<epoch>',
 		stats: {},
 		args: {},
-		image: '',
-		imageType: 'image/png',
+		images: {},
 		index: {},
 		dockernewcreating: false,
 		dockernewerror: null,
@@ -111,7 +110,7 @@ const showAi = uuid => {
 		app.training_loss = data.lastupdate.training_loss
 		app.epoch = data.lastupdate.epoch
 		app.stats = data.lastupdate.stats
-		app.image = data.lastupdateimage.image
+		app.images = data.lastupdateimages
 
 		app.view = 'ai'
 
@@ -182,7 +181,7 @@ stream.addEventListener('UpdateImage', (e) => {
 	if (app.uuid != uuid) {
 		return
 	}
-	app.image = data.image
+	app.images[data.id] = data
 })
 
 stream.addEventListener('Delete', (e) => {

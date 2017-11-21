@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -110,12 +111,22 @@ func (h *Handlers) UpdateImage(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
+	id := ps.ByName("id")
+	if len(id) == 0 {
+		id = "0"
+	}
+	i, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		http.Error(w, "Only support integer image IDs", http.StatusBadRequest)
+		return
+	}
+
 	// Push image
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(r.Body)
 	d := buf.Bytes()
 
-	err := h.manager.UpdateImage(ps.ByName("uuid"), UpdateImage{d})
+	err = h.manager.UpdateImage(ps.ByName("uuid"), UpdateImage{i, "image/png", d})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
