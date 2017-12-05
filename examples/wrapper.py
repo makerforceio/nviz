@@ -80,5 +80,5 @@ atexit.register(exit_handler)
 
 if __name__ == "__main__":
     global url
-    url = os.getenv('URL', 'localhost:8080')
+    url = os.getenv('URL', 'http://localhost:8080')
     wrapper(os.getenv('AI_NAME', sys.argv[0]), sys.argv)
