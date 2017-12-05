@@ -60,14 +60,18 @@ def render(url, ai_id):
 
         completed = False
         while not completed:
-        try:
-            requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
-            if out is not None:
-                requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
+            try:
+                requests.post(url + "api/ai/{}/update".format(ai_id), data=json.dumps(progress))
+                if out is not None:
+                    try:
+                        for i in range(len(out)):
+                            requests.post(url + "api/ai/{}/update/image/{}".format(ai_id, i), data=out[i])
+                    except:
+                        requests.post(url + "api/ai/{}/update/image".format(ai_id), data=out)
 
-            completed = True
-        except:
-            0
+                completed = True
+            except:
+                0
             
 def exit_handler():
     requests.delete(url + "api/ai/{}".format(ai_id))
