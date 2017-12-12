@@ -25,7 +25,7 @@ const app = new Vue({
 		forwardClick: () => { },
 
 		aiDelete: (uuid) => {
-			fetch('/api/ai/' + uuid, {
+			fetch('../api/ai/' + uuid, {
 				method: 'DELETE',
 			}).then(throwIfNotOk).then(o => {
 			}).catch(e => {
@@ -39,7 +39,7 @@ const app = new Vue({
 			app.dockernewstatus = 'Creating container...'
 			const form = new FormData(e.target)
 			const data = formToJSON(form)
-			fetch('/api/docker', {
+			fetch('../api/docker', {
 				method: 'PUT',
 				body: data,
 			}).then(throwIfNotOk).then(o => {
@@ -94,7 +94,7 @@ const throwIfNotOk = e => {
 	throw Error(e.status)
 }
 
-fetch('/api/ai').then(throwIfNotOk).then(data => {
+fetch('../api/ai').then(throwIfNotOk).then(data => {
 	app.index = data
 }).catch(e => {console.error(e)})
 
@@ -104,7 +104,7 @@ const showIndex = () => {
 
 const showAi = uuid => {
 	app.uuid = uuid
-	fetch('/api/ai/' + app.uuid).then(throwIfNotOk).then(data => {
+	fetch('../api/ai/' + app.uuid).then(throwIfNotOk).then(data => {
 		app.name = data.name
 		app.args = data.args
 		app.training_loss = data.lastupdate.training_loss
@@ -144,7 +144,7 @@ window.addEventListener('hashchange', checkHash, false)
 
 // Stream events
 
-const stream = new EventSource('/api/stream')
+const stream = new EventSource('../api/stream')
 
 stream.addEventListener('New', (e) => {
 	const o = JSON.parse(e.data)
